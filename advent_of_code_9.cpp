@@ -17,8 +17,10 @@ class fish {
 
 
 int main(){
+
+   std::string file_name = "input_9.txt";
    std::fstream newfile;
-   newfile.open("input_9.txt");
+   newfile.open(file_name);
    
    std::vector <int> verteilung;
    std::string candidate;
@@ -40,71 +42,113 @@ int main(){
 
    }
 
-   newfile.close(); 
-   std::fstream newfile2;
-   newfile2.open("input_9.txt");
+   newfile.close();
 
-   std::vector<std::vector <int>> matrix {100, std::vector<int>(100,0)}; 
+
+
+
+
+
+   std::fstream newfile2;
+   newfile2.open(file_name);
+
+   std::vector<std::vector <int>> matrix {num_rows, std::vector<int>(num_columns,0)}; 
    
    int i = 0;
-   
+
+
+   int max_col_index = num_columns -1;
+   int max_row_index = num_rows -1; 
+
    while(std::getline(newfile2, candidate)){
    
-   for (int k =0; k < 100; k++){
+   for (int k =0; k < num_columns; k++){
    matrix[i][k] = candidate[k] - '0';
 
    }
    i+=1;
    }
    
-   int m_0 = matrix[0][0];  
-   int m_1 = matrix[99][0];  
-   int m_2 = matrix[0][99];  
-   int m_3 = matrix[99][99];  
+   for (int k =0; k < num_rows; k++){
+   for (int j = 0; j < num_columns; j++){
+       std::cout << matrix.at(k).at(j) ;
 
-   if ((m_0 < matrix[1][0]) && (m_0 < matrix[1][1]) && (m_0 < matrix[0][1])){
-     sum += m_0 +1 ; 
-     lows.push_back(std::vector<int> {0,0});
-   } else if ((m_1 < matrix[99][1]) && (m_1 < matrix[98][0]) && (m_1 < matrix[98][1])){
-
-     sum += m_1 +1 ; 
-     lows.push_back(std::vector<int> {99,0});
-   } else if ((m_2 < matrix[0][98]) && (m_2 < matrix[1][98]) && (m_2 < matrix[1][99])){
-
-     sum += m_2 +1 ; 
-     lows.push_back(std::vector<int> {0,99});
-   }else if ((m_3 < matrix[98][98]) && (m_3 < matrix[98][99]) && (m_3 < matrix[99][98])){
-
-     sum += m_3 +1 ; 
-     lows.push_back(std::vector<int> {99,99});
+  }
+       std::cout<< "|" << std::endl;
    }
-   
-   for (int l =1;  l < 99; l++){
-    m_0 = matrix[0][l];
-    m_1 = matrix[99][l];
-     if ((m_0  < matrix[0][l - 1]) && (m_0 < matrix[1][l]) && (m_0 < matrix[0][l + 1])){
-     
-     sum += m_0 +1 ; 
-     lows.push_back(std::vector<int> {0,l});
-   } else if ((m_1 < matrix[99][l - 1]) && (m_1 < matrix[98][l]) && (m_1 < matrix[99][l + 1])){
 
+
+
+
+
+
+
+
+   int m_0 = matrix.at(0).at(0);  
+   int m_1 = matrix.at(max_row_index).at(0);  
+   int m_2 = matrix.at(0).at(max_col_index);  
+   int m_3 = matrix.at(max_row_index).at(max_col_index);  
+
+   std::cout << m_0 << ":" << m_1 << ":" << m_2 << ":" << m_3 << std::endl;
+
+
+
+
+   if ((m_0 < matrix.at(1).at(0)) && (m_0 < matrix.at(0).at(1))){
+     sum += m_0 +1 ;
+     std::cout << "m_0: " << m_0 << std::endl;
+     lows.push_back(std::vector<int> {0,0, m_0});
+    }
+
+
+   if ((m_1 < matrix.at(max_row_index).at(1)) && (m_1 < matrix.at(max_row_index - 1).at(0)) ){
+
+     std::cout << "m_1: " << m_1 << std::endl;
      sum += m_1 +1 ; 
-     lows.push_back(std::vector<int> {99,l});
+     lows.push_back(std::vector<int> {num_rows -1,0, m_1});
+   } 
+
+   if ((m_2 < matrix.at(0).at(max_col_index - 1)) && (m_2 < matrix.at(1).at(max_col_index)) ){
+     
+     std::cout << "m_2: " << m_2 << std::endl;
+     sum += m_2 +1 ; 
+     lows.push_back(std::vector<int> {0,max_col_index, m_2});
+   } 
+   if ((m_3 < matrix.at(max_row_index -1 ).at(max_col_index)) && (m_3 < matrix.at(max_row_index).at(max_col_index -1))){
+
+     std::cout << "m_3: " << m_3 << std::endl;
+     sum += m_3 +1 ; 
+     lows.push_back(std::vector<int> {max_row_index, max_col_index, m_3});
+   }
+   int n_0 = 0;  
+
+   int n_1 = 0;  
+    for (int l =1;  l < max_col_index; l++){
+    int n_0 = matrix.at(0).at(l);
+    int n_1 = matrix.at(max_row_index).at(l);
+     if ((n_0  < matrix.at(0).at(l - 1)) && (n_0 < matrix.at(1).at(l)) && (n_0 < matrix.at(0).at(l + 1))){
+     
+     sum += n_0 +1 ; 
+     lows.push_back(std::vector<int> {0,l,n_0});
+   } if ((n_1 < matrix.at(max_row_index).at(l - 1)) && (n_1 < matrix.at(max_row_index -1).at(l)) && (n_1 < matrix.at(max_row_index).at(l + 1))){
+
+     sum += n_1 +1 ; 
+     lows.push_back(std::vector<int> {max_row_index,l,n_1});
    } 
    }
 
-   for (int l =1;  l < 99; l++){
-    m_2 = matrix[l][0];
-    m_3 = matrix[l][99];
+   for (int l =1;  l < max_row_index ; l++){
+    int n_2 = matrix.at(l).at(0);
+    int n_3 = matrix.at(l).at(max_col_index);
 
-   if ((m_2 < matrix[l -1 ][0]) && (m_2 < matrix[l][1]) && (m_2 < matrix[l + 1][0])){
+   if ((n_2 < matrix.at(l -1).at(0)) && (n_2 < matrix.at(l).at(1)) && (n_2 < matrix.at(l + 1).at(0))){
 
-     sum += m_2 +1 ; 
-     lows.push_back(std::vector<int> {l,99});
-   } else if ((m_3  < matrix[l - 1][99]) && (m_3 < matrix[l][98]) && (m_3 < matrix[l + 1][99])){
+     sum += n_2 +1 ; 
+     lows.push_back(std::vector<int> {l,0, n_2});
+   } if ((n_3  < matrix.at(l - 1).at(max_col_index)) && (n_3 < matrix.at(l).at(max_col_index -1)) && (n_3 < matrix.at(l + 1).at(max_col_index))){
      
-     sum += m_3 +1 ; 
-     lows.push_back(std::vector<int> {l,0});
+     sum += n_3 +1 ; 
+     lows.push_back(std::vector<int> {l,max_col_index, n_3});
    }
 
    }
@@ -114,31 +158,31 @@ int main(){
 
 
 
-   for (int m = 1; m < 99; m++){
-       for (int k = 1; k < 99;  k++){
-           int val =  matrix[m][k];
+   for (int m = 1; m < max_row_index; m++){
+       for (int k = 1; k < max_col_index;  k++){
+           int val =  matrix.at(m).at(k);
            
-           bool case1 = val < matrix[m -1 ][k -1];
-           bool case2 = val < matrix[m -1 ][k];
-           bool case3 = val < matrix[m- 1][k+ 1];
+           bool case2 = val < matrix.at(m -1).at(k);
            
-           bool case4 = val < matrix[m][k-1];
-           bool case5 = val < matrix[m][k+1];
+           bool case4 = val < matrix.at(m).at(k-1);
+           bool case5 = val < matrix.at(m).at(k+1);
            
-           bool case6 = val < matrix[m+1][k-1];
-           bool case7 = val < matrix[m+1][k];
-           bool case8 = val < matrix[m+1][k+1];
-           bool all_cases = case1 && case2 && case3 && case4 && case5 && case6 && case7 && case8;
+           bool case7 = val < matrix.at(m+1).at(k);
+           bool all_cases = case2 && case4 && case5 && case7;
 
            if (all_cases){
 
              sum += val +1 ; 
-             lows.push_back(std::vector<int> {m,k});
+             lows.push_back(std::vector<int> {m,k, val});
 
            }
      }
    }
-   std::cout << "risk level is: " << sum << std::endl; 
+   std::cout << "risk level is: " << sum << std::endl;
+   std::cout << "num_rows" << num_rows << "num_columns" << num_columns << std::endl;
+   for (int k = 0; k < lows.size() ; k++){
+        std::cout << "the lows: " << lows.at(k).at(0) << "," << lows.at(k).at(1) << "," << lows.at(k).at(2) <<  std::endl;
+   }
    newfile2.close(); 
 return 0;
 }
