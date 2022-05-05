@@ -1,8 +1,33 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <vector>
-#include <sstream>
+
+
+qq
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #include <math.h>
 #include <cstdlib>
 #include <algorithm>
